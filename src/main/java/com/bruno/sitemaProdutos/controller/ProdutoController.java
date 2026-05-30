@@ -1,0 +1,59 @@
+package com.bruno.sitemaProdutos.controller;
+
+import java.util.List;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.bruno.sitemaProdutos.dto.produto.ProdutoRequest;
+import com.bruno.sitemaProdutos.dto.produto.ProdutoResponse;
+import com.bruno.sitemaProdutos.service.ProdutoService;
+
+import jakarta.validation.Valid;
+
+@RestController
+@RequestMapping("/produto")
+public class ProdutoController {
+	
+	private final ProdutoService produtoService;
+
+	public ProdutoController(ProdutoService produtoService) {
+		this.produtoService = produtoService;
+	}
+	
+	@GetMapping
+	public ResponseEntity<List<ProdutoResponse>> getProduto() {
+		return ResponseEntity.ok(produtoService.listarTodosProdutos());
+	}
+	
+	@GetMapping("{id}")
+	public ResponseEntity<ProdutoResponse> produtoById(@PathVariable Long id){
+		return ResponseEntity.ok(produtoService.buscarPorId(id));
+	}
+	
+	@PostMapping
+	public ProdutoResponse createProduto(@Valid @RequestBody ProdutoRequest request) {
+		
+		return produtoService.salvar(request);
+	}
+	
+	@PutMapping("{id}")
+	public ProdutoResponse atualizarProduto(@PathVariable Long id, @RequestBody ProdutoRequest request) {
+		
+		return produtoService.atualizarProduto(id, request);
+	}
+
+	@DeleteMapping("{id}")
+	public ResponseEntity<Void> deletarProduto(@PathVariable Long id){
+		
+		produtoService.removerProduto(id);
+		return ResponseEntity.noContent().build();
+	}
+}
