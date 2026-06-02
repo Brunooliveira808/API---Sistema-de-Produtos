@@ -1,4 +1,4 @@
-package com.bruno.sitemaProdutos.dto.categoria;
+package com.bruno.sistemaProdutos.dto.categoria;
 
 import jakarta.validation.constraints.NotBlank;
 

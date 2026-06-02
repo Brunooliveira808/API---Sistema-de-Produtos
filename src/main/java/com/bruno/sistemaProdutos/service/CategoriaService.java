@@ -1,15 +1,15 @@
-package com.bruno.sitemaProdutos.service;
+package com.bruno.sistemaProdutos.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.bruno.sitemaProdutos.dto.categoria.CategoriaRequest;
-import com.bruno.sitemaProdutos.dto.categoria.CategoriaResponse;
-import com.bruno.sitemaProdutos.dto.produto.ProdutoResumoResponse;
-import com.bruno.sitemaProdutos.entity.Categoria;
-import com.bruno.sitemaProdutos.mapper.CategoriaMapper;
-import com.bruno.sitemaProdutos.repository.CategoriaRepository;
+import com.bruno.sistemaProdutos.dto.categoria.CategoriaRequest;
+import com.bruno.sistemaProdutos.dto.categoria.CategoriaResponse;
+import com.bruno.sistemaProdutos.dto.produto.ProdutoResumoResponse;
+import com.bruno.sistemaProdutos.entity.Categoria;
+import com.bruno.sistemaProdutos.mapper.CategoriaMapper;
+import com.bruno.sistemaProdutos.repository.CategoriaRepository;
 
 @Service
 public class CategoriaService {

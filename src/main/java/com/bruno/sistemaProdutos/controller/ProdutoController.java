@@ -1,4 +1,4 @@
-package com.bruno.sitemaProdutos.controller;
+package com.bruno.sistemaProdutos.controller;
 
 import java.util.List;
 
@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bruno.sitemaProdutos.dto.produto.ProdutoRequest;
-import com.bruno.sitemaProdutos.dto.produto.ProdutoResponse;
-import com.bruno.sitemaProdutos.service.ProdutoService;
+import com.bruno.sistemaProdutos.dto.produto.ProdutoRequest;
+import com.bruno.sistemaProdutos.dto.produto.ProdutoResponse;
+import com.bruno.sistemaProdutos.service.ProdutoService;
 
 import jakarta.validation.Valid;
 
@@ -32,7 +32,28 @@ public class ProdutoController {
 	public ResponseEntity<List<ProdutoResponse>> getProduto() {
 		return ResponseEntity.ok(produtoService.listarTodosProdutos());
 	}
+
+	@GetMapping("/pagina/{page}")
+	public ResponseEntity<List<ProdutoResponse>> getProdutosPorPagina(@PathVariable int page) {
+		return ResponseEntity.ok(produtoService.listarProdutosPorPagina(page));
+
+	}
 	
+	@GetMapping("/nome/{nome}")
+	public ResponseEntity<List<ProdutoResponse>> getProdutosPorNome(@PathVariable String nome) {
+		return ResponseEntity.ok(produtoService.listarProdutosPorNome(nome));
+	}
+
+	@GetMapping("/categoria/{categoria}")
+	public ResponseEntity<List<ProdutoResponse>> getProdutosPorCategoria(@PathVariable String categoria) {
+		return ResponseEntity.ok(produtoService.listarProdutosPorCategoria(categoria));
+	}
+
+	@GetMapping("/faixa-preco/{precoMin}/{precoMax}")
+	public ResponseEntity<List<ProdutoResponse>> getProdutosPorFaixaDePreco(@PathVariable double precoMin, @PathVariable double precoMax) {
+		return ResponseEntity.ok(produtoService.listarProdutosPorFaixaDePreco(precoMin, precoMax));
+	}
+
 	@GetMapping("{id}")
 	public ResponseEntity<ProdutoResponse> produtoById(@PathVariable Long id){
 		return ResponseEntity.ok(produtoService.buscarPorId(id));

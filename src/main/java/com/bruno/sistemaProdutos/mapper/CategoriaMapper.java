@@ -1,10 +1,10 @@
-package com.bruno.sitemaProdutos.mapper;
+package com.bruno.sistemaProdutos.mapper;
 
 import org.springframework.stereotype.Component;
 
-import com.bruno.sitemaProdutos.dto.categoria.CategoriaRequest;
-import com.bruno.sitemaProdutos.dto.categoria.CategoriaResponse;
-import com.bruno.sitemaProdutos.entity.Categoria;
+import com.bruno.sistemaProdutos.dto.categoria.CategoriaRequest;
+import com.bruno.sistemaProdutos.dto.categoria.CategoriaResponse;
+import com.bruno.sistemaProdutos.entity.Categoria;
 
 @Component
 public class CategoriaMapper {

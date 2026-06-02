@@ -1,4 +1,4 @@
-package com.bruno.sitemaProdutos.entity;
+package com.bruno.sistemaProdutos.entity;
 
 import java.util.List;
 

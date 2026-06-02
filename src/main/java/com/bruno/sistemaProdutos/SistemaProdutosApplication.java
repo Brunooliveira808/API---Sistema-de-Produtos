@@ -1,13 +1,13 @@
-package com.bruno.sitemaProdutos;
+package com.bruno.sistemaProdutos;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class SitemaProdutosApplication {
+public class SistemaProdutosApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SitemaProdutosApplication.class, args);
+		SpringApplication.run(SistemaProdutosApplication.class, args);
 	}
 
 }

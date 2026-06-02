@@ -1,14 +1,14 @@
-package com.bruno.sitemaProdutos.mapper;
+package com.bruno.sistemaProdutos.mapper;
 
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.bruno.sitemaProdutos.dto.produto.ProdutoRequest;
-import com.bruno.sitemaProdutos.dto.produto.ProdutoResponse;
-import com.bruno.sitemaProdutos.entity.Categoria;
-import com.bruno.sitemaProdutos.entity.Produto;
-import com.bruno.sitemaProdutos.repository.CategoriaRepository;
+import com.bruno.sistemaProdutos.dto.produto.ProdutoRequest;
+import com.bruno.sistemaProdutos.dto.produto.ProdutoResponse;
+import com.bruno.sistemaProdutos.entity.Categoria;
+import com.bruno.sistemaProdutos.entity.Produto;
+import com.bruno.sistemaProdutos.repository.CategoriaRepository;
 
 @Component
 public class ProdutoMapper {

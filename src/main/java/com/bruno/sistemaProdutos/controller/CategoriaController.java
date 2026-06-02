@@ -1,4 +1,4 @@
-package com.bruno.sitemaProdutos.controller;
+package com.bruno.sistemaProdutos.controller;
 
 import java.util.List;
 
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bruno.sitemaProdutos.dto.categoria.CategoriaRequest;
-import com.bruno.sitemaProdutos.dto.categoria.CategoriaResponse;
-import com.bruno.sitemaProdutos.dto.produto.ProdutoResumoResponse;
-import com.bruno.sitemaProdutos.service.CategoriaService;
+import com.bruno.sistemaProdutos.dto.categoria.CategoriaRequest;
+import com.bruno.sistemaProdutos.dto.categoria.CategoriaResponse;
+import com.bruno.sistemaProdutos.dto.produto.ProdutoResumoResponse;
+import com.bruno.sistemaProdutos.service.CategoriaService;
 
 import jakarta.validation.Valid;
 
@@ -38,7 +38,6 @@ public class CategoriaController {
 	
 	@GetMapping("{id}")
 	public List<ProdutoResumoResponse> getCategoriaPorProduto(@PathVariable Long id) {
-		
 		return categoriaService.listarProdutosPorCategoria(id);
 	}
 	
