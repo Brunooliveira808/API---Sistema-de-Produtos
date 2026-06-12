@@ -1,12 +1,12 @@
 # Sistema de Produtos API
 
-API REST desenvolvida com Spring Boot para gerenciamento de produtos e categorias.
+API REST desenvolvida com Java e Spring Boot para gerenciamento de produtos e categorias.
 
-O projeto tem como objetivo praticar conceitos fundamentais do desenvolvimento backend utilizando Java e Spring Boot, aplicando arquitetura em camadas, DTOs, relacionamento entre entidades, validações e consultas personalizadas com JPA.
+O projeto foi criado com o objetivo de praticar conceitos fundamentais do desenvolvimento Backend moderno utilizando Spring Boot, Hibernate e MySQL, aplicando boas práticas de arquitetura, separação de responsabilidades e modelagem de dados.
 
 ---
 
-## Tecnologias Utilizadas
+# Tecnologias Utilizadas
 
 - Java 21
 - Spring Boot
@@ -14,82 +14,140 @@ O projeto tem como objetivo praticar conceitos fundamentais do desenvolvimento b
 - Spring Data JPA
 - Hibernate
 - Bean Validation
+- Lombok
 - MySQL
 - Maven
 
 ---
 
-## Conceitos Aplicados
+# Conceitos Aplicados
 
-- API REST
-- Arquitetura em Camadas
-- DTO Pattern
-- Mapper Pattern
-- Repository Pattern
-- Service Layer Pattern
-- Bean Validation
-- Relacionamento Many-to-Many
-- Consultas personalizadas com Spring Data JPA
-- Tratamento de relacionamentos entre entidades
+## Arquitetura em Camadas
+
+O projeto segue uma arquitetura organizada em camadas:
+
+```text
+Controller
+ ↓
+Service
+ ↓
+Repository
+ ↓
+Banco de Dados
+```
+
+Cada camada possui uma responsabilidade específica, facilitando manutenção, evolução e testes.
 
 ---
 
-## Estrutura do Projeto
+## DTO Pattern
+
+Utilização de DTOs para separar os dados expostos pela API das entidades persistidas no banco.
+
+Exemplos:
+
+- ProdutoRequest
+- ProdutoResponse
+- ProdutoResumoResponse
+- CategoriaRequest
+- CategoriaResponse
+
+---
+
+## Mapper Pattern
+
+Responsável por converter:
 
 ```text
-src/main/java
-│
-├── controller
-│   ├── ProdutoController
-│   └── CategoriaController
-│
-├── service
-│   ├── ProdutoService
-│   └── CategoriaService
-│
-├── repository
-│   ├── ProdutoRepository
-│   └── CategoriaRepository
-│
-├── mapper
-│   ├── ProdutoMapper
-│   └── CategoriaMapper
-│
-├── entity
-│   ├── Produto
-│   └── Categoria
-│
-└── dto
-    ├── categoria
-    └── produto
+DTO -> Entity
+Entity -> DTO
+```
+
+Mantendo controllers e services mais limpos.
+
+---
+
+## Repository Pattern
+
+Abstração do acesso aos dados utilizando Spring Data JPA.
+
+Exemplo:
+
+```java
+public interface ProdutoRepository extends JpaRepository<Produto, Long>
 ```
 
 ---
 
-## Modelagem
+## Tratamento Global de Exceções
 
-### Produto
+Implementação de:
 
-- id
-- nome
-- preco
-- categorias
+```java
+@ControllerAdvice
+```
 
-### Categoria
-
-- id
-- nome
-- produtos
-
----
-
-## Relacionamento
-
-O projeto utiliza um relacionamento Many-to-Many entre produtos e categorias.
+para centralizar o tratamento de erros da aplicação.
 
 Exemplo:
 
-Produto:
+```java
+@NotFoundException
+```
+
+retornando respostas padronizadas para o cliente.
+
+---
+
+## Bean Validation
+
+Validação dos dados recebidos pela API.
+
+Exemplos:
+
+- Campos obrigatórios
+- Preço positivo
+- Nome não nulo
+
+---
+
+# Modelagem
+
+## Produto
+
+| Campo | Tipo |
+|---------|---------|
+| id | Long |
+| nome | String |
+| preco | Double |
+| categorias | List<Categoria> |
+
+---
+
+## Categoria
+
+| Campo | Tipo |
+|---------|---------|
+| id | Long |
+| nome | String |
+| produtos | List<Produto> |
+
+---
+
+# Relacionamento
+
+O sistema utiliza um relacionamento:
+
+```text
+Many-to-Many
+```
+
+Onde:
+
+- Um produto pode possuir várias categorias
+- Uma categoria pode possuir vários produtos
+
+Exemplo:
 
 ```text
 Notebook Gamer
@@ -102,169 +160,209 @@ ELETRONICOS
 INFORMATICA
 ```
 
-Um produto pode possuir várias categorias e uma categoria pode estar associada a vários produtos.
-
 ---
 
-## Funcionalidades
+# Funcionalidades
 
-### Produtos
+## Produtos
 
 - Criar produto
-- Buscar produto por ID
-- Listar todos os produtos
+- Buscar por ID
 - Atualizar produto
-- Remover produto
-- Buscar produtos por nome
-- Buscar produtos por categoria
-- Buscar produtos por faixa de preço
-- Listagem paginada
+- Excluir produto
+- Listar todos os produtos
+- Buscar por nome
+- Buscar por categoria
+- Buscar por faixa de preço
+- Paginação
 
-### Categorias
+## Categorias
 
 - Criar categoria
 - Listar categorias
-- Listar produtos associados a uma categoria
+- Buscar produtos de uma categoria
 
 ---
 
-## Endpoints
+# Endpoints
 
-### Produto
+## Produto
 
-| Método | Endpoint | Descrição |
-|----------|----------|----------|
-| POST | /produto | Criar produto |
-| GET | /produto | Listar produtos |
-| GET | /produto/{id} | Buscar produto por ID |
-| PUT | /produto/{id} | Atualizar produto |
-| DELETE | /produto/{id} | Remover produto |
-| GET | /produto/pagina/{page} | Paginação |
-| GET | /produto/nome/{nome} | Buscar por nome |
-| GET | /produto/categoria/{categoria} | Buscar por categoria |
-| GET | /produto/faixa-preco/{precoMin}/{precoMax} | Buscar por faixa de preço |
-
----
-
-### Categoria
-
-| Método | Endpoint | Descrição |
-|----------|----------|----------|
-| POST | /categoria | Criar categoria |
-| GET | /categoria | Listar categorias |
-| GET | /categoria/{id} | Listar produtos da categoria |
+| Método | Endpoint |
+|----------|----------|
+| POST | /produto |
+| GET | /produto |
+| GET | /produto/{id} |
+| PUT | /produto/{id} |
+| DELETE | /produto/{id} |
+| GET | /produto/nome/{nome} |
+| GET | /produto/categoria/{categoria} |
+| GET | /produto/faixa-preco/{min}/{max} |
+| GET | /produto/pagina/{page} |
 
 ---
 
-## Exemplo de Cadastro de Categoria
+## Categoria
 
-### Request
-
-```json
-{
-  "nome": "ELETRONICOS"
-}
-```
-
-### Response
-
-```json
-{
-  "id": 1,
-  "nome": "ELETRONICOS"
-}
-```
+| Método | Endpoint |
+|----------|----------|
+| POST | /categoria |
+| GET | /categoria |
+| GET | /categoria/{id} |
 
 ---
 
-## Exemplo de Cadastro de Produto
+# Estrutura do Projeto
 
-### Request
-
-```json
-{
-  "nome": "Notebook Gamer",
-  "preco": 4999.99,
-  "categoriasIds": [1, 2]
-}
-```
-
-### Response
-
-```json
-{
-  "id": 1,
-  "nome": "Notebook Gamer",
-  "preco": 4999.99,
-  "categorias": [
-    "ELETRONICOS",
-    "INFORMATICA"
-  ]
-}
+```text
+src/main/java
+│
+├── controller
+│
+├── service
+│
+├── repository
+│
+├── entity
+│
+├── dto
+│
+├── mapper
+│
+├── exception
+│
+└── handler
 ```
 
 ---
 
-## Exemplo de Consulta por Categoria
+# Pontos Fortes do Projeto
 
-### GET
+✅ Arquitetura em camadas
 
-```http
-GET /categoria/1
+✅ DTO Pattern
+
+✅ Mapper Pattern
+
+✅ Relacionamento Many-to-Many
+
+✅ Bean Validation
+
+✅ Tratamento global de exceções
+
+✅ Consultas derivadas do Spring Data JPA
+
+✅ Paginação
+
+✅ Código organizado e legível
+
+✅ Separação entre regras de negócio e acesso a dados
+
+---
+
+# O Que Pode Ser Melhorado
+
+## 1. Testes Automatizados
+
+Atualmente existe apenas a estrutura inicial de testes.
+
+Adicionar:
+
+- JUnit 5
+- Mockito
+- MockMvc
+
+permitirá validar regras de negócio e endpoints automaticamente.
+
+---
+
+## 2. Documentação Swagger
+
+Adicionar:
+
+- OpenAPI
+- Swagger UI
+
+para documentação automática da API.
+
+---
+
+## 3. Docker
+
+Containerizar:
+
+- Aplicação Spring Boot
+- Banco MySQL
+
+facilita execução e demonstra conhecimento de DevOps.
+
+---
+
+## 4. Spring Security
+
+Implementar:
+
+- Autenticação
+- Autorização
+- JWT
+
+transformaria o projeto em algo muito mais próximo de um sistema real.
+
+---
+
+## 5. Logs Profissionais
+
+Utilizar:
+
+```java
+@Slf4j
 ```
 
-### Response
+ou
 
-```json
-[
-  {
-    "id": 1,
-    "nome": "Notebook Gamer",
-    "preco": 4999.99
-  },
-  {
-    "id": 2,
-    "nome": "Mouse Gamer",
-    "preco": 199.99
-  }
-]
+```java
+LoggerFactory
+```
+
+para registrar eventos importantes da aplicação.
+
+---
+
+## 6. Paginação com Pageable
+
+Atualmente a paginação funciona, mas pode ser modernizada utilizando:
+
+```java
+Pageable
+```
+
+e retornando:
+
+```java
+Page<ProdutoResponse>
 ```
 
 ---
 
-## Validações
+## 7. Versionamento da API
 
-O projeto utiliza Bean Validation para garantir integridade dos dados recebidos pela API.
+Exemplo:
 
-Exemplos:
+```text
+/api/v1/produtos
+```
 
-- Nome obrigatório
-- Preço positivo
-- Lista de categorias obrigatória ao cadastrar produto
-
----
-
-## Melhorias Futuras
-
-- Paginação utilizando Pageable
-- Ordenação dinâmica
-- Swagger/OpenAPI
-- Tratamento global de exceções (`@RestControllerAdvice`)
-- Testes unitários
-- Testes de integração
-- Dockerização da aplicação
+Boa prática utilizada em sistemas corporativos.
 
 ---
 
-## Objetivo
+## 8. CI/CD
 
-Este projeto foi desenvolvido para consolidar conhecimentos em:
+Adicionar pipeline utilizando:
 
-- Java
-- Spring Boot
-- JPA/Hibernate
-- APIs REST
-- Arquitetura de Software
-- Boas práticas de desenvolvimento backend
+- GitHub Actions
+- Jenkins
 
-Servindo como projeto de estudo e portfólio para vagas de estágio e desenvolvedor Java Júnior.
+para build e testes automáticos.
+
+---

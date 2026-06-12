@@ -5,14 +5,13 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.bruno.exception.NotFoundException;
 import com.bruno.sistemaProdutos.dto.produto.ProdutoRequest;
 import com.bruno.sistemaProdutos.dto.produto.ProdutoResponse;
 import com.bruno.sistemaProdutos.entity.Produto;
 import com.bruno.sistemaProdutos.mapper.ProdutoMapper;
 import com.bruno.sistemaProdutos.repository.CategoriaRepository;
 import com.bruno.sistemaProdutos.repository.ProdutoRepository;
-
-import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ProdutoService {
@@ -38,7 +37,7 @@ public class ProdutoService {
 	}
 
 	public ProdutoResponse buscarPorId(Long id) {
-		Produto produto = produtoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Produto não encontrado"));
+		Produto produto = produtoRepository.findById(id).orElseThrow(() -> new NotFoundException("Produto não encontrado"));
 		
 		return produtoMapper.toResponse(produto);
 	}
@@ -83,7 +82,7 @@ public class ProdutoService {
 	
 	public void removerProduto(Long id) {
 		if(!produtoRepository.existsById(id)) {
-			throw new EntityNotFoundException("ID do produto não encontrado");
+			throw new NotFoundException("ID do produto não encontrado");
 		} else {
 			produtoRepository.deleteById(id);
 		}
@@ -92,7 +91,7 @@ public class ProdutoService {
 	public ProdutoResponse atualizarProduto(Long id, ProdutoRequest request) {
 		
 	
-		Produto produto = produtoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Produto não encontrado"));
+		Produto produto = produtoRepository.findById(id).orElseThrow(() -> new NotFoundException("Produto não encontrado"));
 		produto.setNome(request.nome());
 		produto.setPreco(request.preco());
 		produto.setCategorias(categoriaRepository.findAllById(request.categoriasIds()));

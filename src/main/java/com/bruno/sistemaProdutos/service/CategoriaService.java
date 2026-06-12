@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.bruno.exception.NotFoundException;
 import com.bruno.sistemaProdutos.dto.categoria.CategoriaRequest;
 import com.bruno.sistemaProdutos.dto.categoria.CategoriaResponse;
 import com.bruno.sistemaProdutos.dto.produto.ProdutoResumoResponse;
@@ -37,7 +38,7 @@ public class CategoriaService {
 	
 	public List<ProdutoResumoResponse> listarProdutosPorCategoria(Long Id) {
 		
-		Categoria categoria = categoriaRepository.findById(Id).orElseThrow(() -> new RuntimeException("Essa categoria não existe"));
+		Categoria categoria = categoriaRepository.findById(Id).orElseThrow(() -> new NotFoundException("Essa categoria não existe"));
 		
 	    return categoria.getProdutos()
 	            .stream()
