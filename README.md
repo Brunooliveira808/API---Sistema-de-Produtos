@@ -2,7 +2,7 @@
 
 API REST desenvolvida com Java e Spring Boot para gerenciamento de produtos e categorias.
 
-O projeto foi criado com o objetivo de praticar conceitos fundamentais do desenvolvimento Backend moderno utilizando Spring Boot, Hibernate e MySQL, aplicando boas práticas de arquitetura, separação de responsabilidades e modelagem de dados.
+O projeto foi construído com foco no aprendizado e aplicação de boas práticas do ecossistema Spring, utilizando arquitetura em camadas, DTOs, mapeamento de objetos, validações, tratamento global de exceções e integração com MySQL.
 
 ---
 
@@ -13,10 +13,34 @@ O projeto foi criado com o objetivo de praticar conceitos fundamentais do desenv
 - Spring Web
 - Spring Data JPA
 - Hibernate
+- MySQL
 - Bean Validation
 - Lombok
-- MySQL
 - Maven
+- Docker Compose
+
+---
+
+# Funcionalidades
+
+## Produtos
+
+- Criar produto
+- Buscar produto por ID
+- Atualizar produto
+- Excluir produto
+- Listar produtos
+- Buscar por nome
+- Buscar por categoria
+- Buscar por faixa de preço
+- Paginação de resultados
+
+## Categorias
+
+- Criar categoria
+- Buscar categoria por ID
+- Listar categorias
+- Consultar produtos de uma categoria
 
 ---
 
@@ -24,25 +48,21 @@ O projeto foi criado com o objetivo de praticar conceitos fundamentais do desenv
 
 ## Arquitetura em Camadas
 
-O projeto segue uma arquitetura organizada em camadas:
-
-```text
 Controller
  ↓
 Service
  ↓
 Repository
  ↓
-Banco de Dados
-```
+Database
 
-Cada camada possui uma responsabilidade específica, facilitando manutenção, evolução e testes.
+Cada camada possui responsabilidades específicas, promovendo organização, manutenção e escalabilidade.
 
 ---
 
 ## DTO Pattern
 
-Utilização de DTOs para separar os dados expostos pela API das entidades persistidas no banco.
+Separação entre os dados expostos pela API e as entidades persistidas no banco de dados.
 
 Exemplos:
 
@@ -56,14 +76,10 @@ Exemplos:
 
 ## Mapper Pattern
 
-Responsável por converter:
+Conversão centralizada entre DTOs e entidades.
 
-```text
 DTO -> Entity
 Entity -> DTO
-```
-
-Mantendo controllers e services mais limpos.
 
 ---
 
@@ -71,43 +87,23 @@ Mantendo controllers e services mais limpos.
 
 Abstração do acesso aos dados utilizando Spring Data JPA.
 
-Exemplo:
+---
 
-```java
-public interface ProdutoRepository extends JpaRepository<Produto, Long>
-```
+## Bean Validation
+
+Validação automática dos dados recebidos pela API.
+
+Exemplos:
+
+- Campos obrigatórios
+- Valores positivos
+- Restrições de tamanho
 
 ---
 
 ## Tratamento Global de Exceções
 
-Implementação de:
-
-```java
-@ControllerAdvice
-```
-
-para centralizar o tratamento de erros da aplicação.
-
-Exemplo:
-
-```java
-@NotFoundException
-```
-
-retornando respostas padronizadas para o cliente.
-
----
-
-## Bean Validation
-
-Validação dos dados recebidos pela API.
-
-Exemplos:
-
-- Campos obrigatórios
-- Preço positivo
-- Nome não nulo
+Implementado através de @ControllerAdvice, garantindo respostas padronizadas para erros da aplicação.
 
 ---
 
@@ -115,254 +111,125 @@ Exemplos:
 
 ## Produto
 
-| Campo | Tipo |
-|---------|---------|
-| id | Long |
-| nome | String |
-| preco | Double |
-| categorias | List<Categoria> |
-
----
+- id : Long
+- nome : String
+- preco : Double
+- categorias : List<Categoria>
 
 ## Categoria
 
-| Campo | Tipo |
-|---------|---------|
-| id | Long |
-| nome | String |
-| produtos | List<Produto> |
+- id : Long
+- nome : String
+- produtos : List<Produto>
 
 ---
 
 # Relacionamento
 
-O sistema utiliza um relacionamento:
+## Many-to-Many
 
-```text
-Many-to-Many
-```
+Produto ↔ Categoria
 
-Onde:
-
-- Um produto pode possuir várias categorias
-- Uma categoria pode possuir vários produtos
-
-Exemplo:
-
-```text
-Notebook Gamer
-```
-
-Categorias:
-
-```text
-ELETRONICOS
-INFORMATICA
-```
-
----
-
-# Funcionalidades
-
-## Produtos
-
-- Criar produto
-- Buscar por ID
-- Atualizar produto
-- Excluir produto
-- Listar todos os produtos
-- Buscar por nome
-- Buscar por categoria
-- Buscar por faixa de preço
-- Paginação
-
-## Categorias
-
-- Criar categoria
-- Listar categorias
-- Buscar produtos de uma categoria
-
----
-
-# Endpoints
-
-## Produto
-
-| Método | Endpoint |
-|----------|----------|
-| POST | /produto |
-| GET | /produto |
-| GET | /produto/{id} |
-| PUT | /produto/{id} |
-| DELETE | /produto/{id} |
-| GET | /produto/nome/{nome} |
-| GET | /produto/categoria/{categoria} |
-| GET | /produto/faixa-preco/{min}/{max} |
-| GET | /produto/pagina/{page} |
-
----
-
-## Categoria
-
-| Método | Endpoint |
-|----------|----------|
-| POST | /categoria |
-| GET | /categoria |
-| GET | /categoria/{id} |
+Um produto pode pertencer a várias categorias e uma categoria pode conter vários produtos.
 
 ---
 
 # Estrutura do Projeto
 
-```text
 src/main/java
-│
+
 ├── controller
-│
 ├── service
-│
 ├── repository
-│
 ├── entity
-│
 ├── dto
-│
 ├── mapper
-│
 ├── exception
-│
 └── handler
-```
 
 ---
 
-# Pontos Fortes do Projeto
+# Ambiente Docker
 
-✅ Arquitetura em camadas
+O projeto utiliza Docker Compose para disponibilizar rapidamente uma instância do MySQL para a aplicação.
 
-✅ DTO Pattern
+## Executar banco de dados
 
-✅ Mapper Pattern
+docker compose -f docker/docker-compose.yml up -d
 
-✅ Relacionamento Many-to-Many
+## Encerrar banco de dados
 
-✅ Bean Validation
+docker compose -f docker/docker-compose.yml down
 
-✅ Tratamento global de exceções
+## Configuração
 
-✅ Consultas derivadas do Spring Data JPA
-
-✅ Paginação
-
-✅ Código organizado e legível
-
-✅ Separação entre regras de negócio e acesso a dados
+Banco: mydb
+Usuário: admin
+Senha: 123
+Porta: 3306
 
 ---
 
-# O Que Pode Ser Melhorado
+# Endpoints Principais
 
-## 1. Testes Automatizados
+## Produto
 
-Atualmente existe apenas a estrutura inicial de testes.
+POST   /produto
+GET    /produto
+GET    /produto/{id}
+PUT    /produto/{id}
+DELETE /produto/{id}
+GET    /produto/nome/{nome}
+GET    /produto/categoria/{categoria}
+GET    /produto/faixa-preco/{min}/{max}
 
-Adicionar:
+## Categoria
 
-- JUnit 5
-- Mockito
-- MockMvc
-
-permitirá validar regras de negócio e endpoints automaticamente.
-
----
-
-## 2. Documentação Swagger
-
-Adicionar:
-
-- OpenAPI
-- Swagger UI
-
-para documentação automática da API.
+POST /categoria
+GET  /categoria
+GET  /categoria/{id}
 
 ---
 
-## 3. Docker
+# Pontos Fortes
 
-Containerizar:
-
-- Aplicação Spring Boot
-- Banco MySQL
-
-facilita execução e demonstra conhecimento de DevOps.
-
----
-
-## 4. Spring Security
-
-Implementar:
-
-- Autenticação
-- Autorização
-- JWT
-
-transformaria o projeto em algo muito mais próximo de um sistema real.
+- Arquitetura em camadas
+- DTO Pattern
+- Mapper Pattern
+- Repository Pattern
+- Bean Validation
+- Tratamento global de exceções
+- Relacionamento Many-to-Many
+- Consultas customizadas com Spring Data JPA
+- Paginação
+- MySQL
+- Docker Compose para ambiente de banco de dados
+- Código organizado e desacoplado
 
 ---
 
-## 5. Logs Profissionais
+# Próximas Evoluções
 
-Utilizar:
-
-```java
-@Slf4j
-```
-
-ou
-
-```java
-LoggerFactory
-```
-
-para registrar eventos importantes da aplicação.
+- Implementação de testes com JUnit e Mockito
+- Documentação Swagger/OpenAPI
+- Dockerfile da aplicação Spring Boot
+- Containerização completa da API
+- Spring Security + JWT
+- Logs estruturados
+- CI/CD com GitHub Actions
 
 ---
 
-## 6. Paginação com Pageable
+# Avaliação Técnica
 
-Atualmente a paginação funciona, mas pode ser modernizada utilizando:
-
-```java
-Pageable
-```
-
-e retornando:
-
-```java
-Page<ProdutoResponse>
-```
+Organização: 9/10
+Arquitetura: 8.5/10
+Modelagem: 8.5/10
+Boas práticas: 8.5/10
+Projeto para vaga Java Júnior: 8.5/10
 
 ---
 
-## 7. Versionamento da API
+# Objetivo do Projeto
 
-Exemplo:
-
-```text
-/api/v1/produtos
-```
-
-Boa prática utilizada em sistemas corporativos.
-
----
-
-## 8. CI/CD
-
-Adicionar pipeline utilizando:
-
-- GitHub Actions
-- Jenkins
-
-para build e testes automáticos.
-
----
+Este projeto foi desenvolvido para consolidar conhecimentos em desenvolvimento Backend com Spring Boot e demonstrar a aplicação de boas práticas utilizadas em projetos reais do mercado.

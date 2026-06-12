@@ -1,4 +1,4 @@
-package com.bruno.exception;
+package com.bruno.sistemaProdutos.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

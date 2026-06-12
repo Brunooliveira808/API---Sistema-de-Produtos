@@ -1,12 +1,12 @@
-package com.bruno.handler;
+package com.bruno.sistemaProdutos.handler;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import com.bruno.exception.ErrorResponse;
-import com.bruno.exception.NotFoundException;
+import com.bruno.sistemaProdutos.exception.ErrorResponse;
+import com.bruno.sistemaProdutos.exception.NotFoundException;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
