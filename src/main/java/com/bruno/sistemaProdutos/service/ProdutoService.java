@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.bruno.sistemaProdutos.exception.NotFoundException;
 import com.bruno.sistemaProdutos.dto.produto.ProdutoRequest;
 import com.bruno.sistemaProdutos.dto.produto.ProdutoResponse;
 import com.bruno.sistemaProdutos.entity.Produto;
+import com.bruno.sistemaProdutos.exception.NotFoundException;
 import com.bruno.sistemaProdutos.mapper.ProdutoMapper;
 import com.bruno.sistemaProdutos.repository.CategoriaRepository;
 import com.bruno.sistemaProdutos.repository.ProdutoRepository;

@@ -1,8 +1,8 @@
 # Sistema de Produtos API
 
-API REST desenvolvida com Java e Spring Boot para gerenciamento de produtos e categorias.
+API REST desenvolvida com Java e Spring Boot para gerenciamento de produtos, categorias e autenticação de usuários.
 
-O projeto foi construído com foco no aprendizado e aplicação de boas práticas do ecossistema Spring, utilizando arquitetura em camadas, DTOs, mapeamento de objetos, validações, tratamento global de exceções e integração com MySQL.
+O projeto foi construído com foco no aprendizado e aplicação de boas práticas do ecossistema Spring, utilizando arquitetura em camadas, DTOs, mapeamento de objetos, validações, tratamento global de exceções, autenticação JWT e integração com MySQL.
 
 ---
 
@@ -10,9 +10,11 @@ O projeto foi construído com foco no aprendizado e aplicação de boas prática
 
 - Java 21
 - Spring Boot
-- Spring Web
+- Spring Web MVC
 - Spring Data JPA
 - Hibernate
+- Spring Security
+- JWT (JSON Web Token)
 - MySQL
 - Bean Validation
 - Lombok
@@ -42,6 +44,15 @@ O projeto foi construído com foco no aprendizado e aplicação de boas prática
 - Listar categorias
 - Consultar produtos de uma categoria
 
+## Autenticação
+
+- Cadastro de usuários
+- Login de usuários
+- Geração de Token JWT
+- Validação automática de Token JWT
+- Controle de acesso baseado em Roles
+- Senhas protegidas com BCrypt
+
 ---
 
 # Conceitos Aplicados
@@ -49,61 +60,65 @@ O projeto foi construído com foco no aprendizado e aplicação de boas prática
 ## Arquitetura em Camadas
 
 Controller
- ↓
+↓
 Service
- ↓
+↓
 Repository
- ↓
+↓
 Database
-
-Cada camada possui responsabilidades específicas, promovendo organização, manutenção e escalabilidade.
-
----
 
 ## DTO Pattern
 
-Separação entre os dados expostos pela API e as entidades persistidas no banco de dados.
-
-Exemplos:
-
-- ProdutoRequest
-- ProdutoResponse
-- ProdutoResumoResponse
-- CategoriaRequest
-- CategoriaResponse
-
----
+Separação entre dados expostos pela API e entidades persistidas.
 
 ## Mapper Pattern
 
 Conversão centralizada entre DTOs e entidades.
 
-DTO -> Entity
-Entity -> DTO
-
----
-
 ## Repository Pattern
 
 Abstração do acesso aos dados utilizando Spring Data JPA.
-
----
 
 ## Bean Validation
 
 Validação automática dos dados recebidos pela API.
 
-Exemplos:
+## Tratamento Global de Exceções
 
-- Campos obrigatórios
-- Valores positivos
-- Restrições de tamanho
+Centralização de erros através de @ControllerAdvice.
+
+## Spring Security
+
+Implementação de autenticação e autorização baseada em JWT.
 
 ---
 
-## Tratamento Global de Exceções
+# Segurança
 
-Implementado através de @ControllerAdvice, garantindo respostas padronizadas para erros da aplicação.
+A aplicação utiliza autenticação Stateless com JWT.
+
+Rotas públicas:
+
+POST /auth/register
+POST /auth/login
+
+Rotas protegidas:
+
+- Produtos
+- Categorias
+
+Restrições de acesso:
+
+- ADMIN pode criar, alterar e remover produtos e categorias.
+- Usuários autenticados podem acessar recursos permitidos pelas regras da aplicação.
+
+Componentes implementados:
+
+- SecurityConfiguration
+- JwtAuthenticationFilter
+- TokenProvider
+- AuthenticationService
+- UserDetailsServiceImpl
 
 ---
 
@@ -126,11 +141,9 @@ Implementado através de @ControllerAdvice, garantindo respostas padronizadas pa
 
 # Relacionamento
 
-## Many-to-Many
+Many-to-Many
 
 Produto ↔ Categoria
-
-Um produto pode pertencer a várias categorias e uma categoria pode conter vários produtos.
 
 ---
 
@@ -144,6 +157,7 @@ src/main/java
 ├── entity
 ├── dto
 ├── mapper
+├── config
 ├── exception
 └── handler
 
@@ -151,85 +165,97 @@ src/main/java
 
 # Ambiente Docker
 
-O projeto utiliza Docker Compose para disponibilizar rapidamente uma instância do MySQL para a aplicação.
+O projeto utiliza Docker Compose para disponibilizar uma instância MySQL para a aplicação.
 
-## Executar banco de dados
+Executar:
 
 docker compose -f docker/docker-compose.yml up -d
 
-## Encerrar banco de dados
+Encerrar:
 
 docker compose -f docker/docker-compose.yml down
-
-## Configuração
-
-Banco: mydb
-Usuário: admin
-Senha: 123
-Porta: 3306
 
 ---
 
 # Endpoints Principais
 
+## Autenticação
+
+POST /auth/register
+
+POST /auth/login
+
 ## Produto
 
-POST   /produto
-GET    /produto
-GET    /produto/{id}
-PUT    /produto/{id}
+POST /produto
+
+GET /produto
+
+GET /produto/{id}
+
+PUT /produto/{id}
+
 DELETE /produto/{id}
-GET    /produto/nome/{nome}
-GET    /produto/categoria/{categoria}
-GET    /produto/faixa-preco/{min}/{max}
+
+GET /produto/nome/{nome}
+
+GET /produto/categoria/{categoria}
+
+GET /produto/faixa-preco/{min}/{max}
 
 ## Categoria
 
 POST /categoria
-GET  /categoria
-GET  /categoria/{id}
+
+GET /categoria
+
+GET /categoria/{id}
 
 ---
 
 # Pontos Fortes
 
-- Arquitetura em camadas
-- DTO Pattern
-- Mapper Pattern
-- Repository Pattern
-- Bean Validation
-- Tratamento global de exceções
-- Relacionamento Many-to-Many
-- Consultas customizadas com Spring Data JPA
-- Paginação
-- MySQL
-- Docker Compose para ambiente de banco de dados
-- Código organizado e desacoplado
+✅ Arquitetura em camadas
+
+✅ DTO Pattern
+
+✅ Mapper Pattern
+
+✅ Repository Pattern
+
+✅ Bean Validation
+
+✅ Tratamento global de exceções
+
+✅ Relacionamento Many-to-Many
+
+✅ Consultas customizadas com Spring Data JPA
+
+✅ Paginação
+
+✅ Spring Security
+
+✅ JWT Authentication
+
+✅ BCrypt Password Encoder
+
+✅ Controle de acesso por Roles
+
+✅ Docker Compose
+
+✅ Integração com MySQL
 
 ---
 
 # Próximas Evoluções
 
-- Implementação de testes com JUnit e Mockito
-- Documentação Swagger/OpenAPI
-- Dockerfile da aplicação Spring Boot
+- Testes automatizados com JUnit e Mockito
+- Swagger/OpenAPI
+- Dockerfile da aplicação
 - Containerização completa da API
-- Spring Security + JWT
-- Logs estruturados
 - CI/CD com GitHub Actions
+- Cobertura de testes
 
 ---
 
-# Avaliação Técnica
 
-Organização: 9/10
-Arquitetura: 8.5/10
-Modelagem: 8.5/10
-Boas práticas: 8.5/10
-Projeto para vaga Java Júnior: 8.5/10
-
----
-
-# Objetivo do Projeto
-
-Este projeto foi desenvolvido para consolidar conhecimentos em desenvolvimento Backend com Spring Boot e demonstrar a aplicação de boas práticas utilizadas em projetos reais do mercado.
