@@ -163,17 +163,42 @@ src/main/java
 
 ---
 
-# Ambiente Docker
+# Como Executar o Projeto
 
-O projeto utiliza Docker Compose para disponibilizar uma instância MySQL para a aplicação.
+## Requisitos
 
-Executar:
+Antes de iniciar, você precisará ter instalado em sua máquina:
+- **Docker** e **Docker Compose**
+- **Java 21 (JDK)**
+- **Maven** (opcional, o projeto possui o Maven Wrapper `./mvnw`)
 
-docker compose -f docker/docker-compose.yml up -d
+## Passo a Passo
 
-Encerrar:
+### 1. Iniciar o Banco de Dados (MySQL)
+O banco de dados roda em um container Docker. Para iniciá-lo em segundo plano, execute o seguinte comando na raiz do projeto:
+```bash
+sudo docker compose -f docker/docker-compose.yml up -d
+```
 
-docker compose -f docker/docker-compose.yml down
+Se precisar encerrar o container do banco:
+```bash
+sudo docker compose -f docker/docker-compose.yml down
+```
+
+### 2. Configurar a Variável `JAVA_HOME` (caso necessário)
+Certifique-se de que a variável de ambiente `JAVA_HOME` aponta para a instalação do JDK 21. No Linux (Ubuntu), você pode exportar temporariamente ou adicionar ao seu `~/.bashrc`:
+```bash
+export JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+```
+
+### 3. Iniciar a API Java (Spring Boot)
+Com o banco de dados ativo, execute o comando abaixo na raiz do projeto para compilar e subir a aplicação:
+```bash
+chmod +x mvnw
+./mvnw spring-boot:run
+```
+
+A API estará disponível em `http://localhost:8080`.
 
 ---
 

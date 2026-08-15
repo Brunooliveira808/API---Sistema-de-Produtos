@@ -29,6 +29,7 @@ public class ProdutoController {
 	}
 	
 	@GetMapping
+	// Corretto é retornar os produtos com paginação
 	public ResponseEntity<List<ProdutoResponse>> getProduto() {
 		return ResponseEntity.ok(produtoService.listarTodosProdutos());
 	}
